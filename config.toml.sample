@@ -1,0 +1,49 @@
+
+[irc] # possible irc config fields: https://docs.rs/irc/0.13.6/irc/client/data/config/struct.Config.html#fields
+owners = []
+nickname = "etDisco"
+username = "etDisco"
+realname = "Discord Irc"
+server = "irc.freenode.net"
+port = 6697
+password = ""
+use_ssl = true
+encoding = "UTF-8"
+channels = ["#etlegacy"]
+umodes = "+RB-x"
+ping_time = 180
+ping_timeout = 10
+burst_window_length = 8
+max_messages_in_burst = 15
+should_ghost = false
+ghost_sequence = []
+
+
+[discord] # only supported field is token
+token = "TOKEN"
+
+# ORDER MATTERS
+# It uses the first matching mapping
+[[mapping.irc]]
+from = "#etlegacy"
+user = "Commander"
+to = [693449787508523018]
+
+[[mapping.irc]]
+from = "#etlegacy"
+to = [539619545925681152]
+
+[[mapping.discord]]
+from = 539619545925681152
+to = ["#etlegacy"]
+
+[misc]
+badwords = [ # filter all messages containing this
+    "https://williampitcock.com/",
+    "https://bryanostergaard.com/",
+    "https://encyclopediadramatica.rs/Freenodegate",
+    "https://MattSTrout.com/",
+    "fentanyl"
+]
+# repository is used for finding issues by #<id>
+repository = "etlegacy/etlegacy"
