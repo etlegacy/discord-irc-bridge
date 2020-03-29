@@ -62,6 +62,7 @@ struct Mapping {
 struct Misc {
     badwords: Vec<String>,
     repository: String,
+    filterchars: String,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Default)]
@@ -178,7 +179,10 @@ fn get_discord_targets<'a>(sources: &'a [IrcSource], msg: &IrcMsg) -> Option<&'a
 
 async fn handle_irc_msg(http: HttpClient, config: Arc<CombinedConfig>, tx: Sender, msg: Message) {
     let msg = IrcMsg::from_messsage(msg);
-    if util::contains_bad_words(&msg.content, &config.misc.badwords) {
+    if
+        config.misc.filterchars.chars().any(|c| msg.content.starts_with(c))
+        || util::contains_bad_words(&msg.content, &config.misc.badwords)
+    {
         return;
     }
     if let Some(targets) = get_discord_targets(&config.mapping.irc, &msg) {
@@ -196,7 +200,10 @@ async fn handle_irc_msg(http: HttpClient, config: Arc<CombinedConfig>, tx: Sende
 }
 
 async fn handle_discord_msg(tx: Sender, config: Arc<CombinedConfig>, http: HttpClient, msg: DiscordMessage) {
-    if util::contains_bad_words(&msg.content, &config.misc.badwords) {
+    if
+        config.misc.filterchars.chars().any(|c| msg.content.starts_with(c))
+        || util::contains_bad_words(&msg.content, &config.misc.badwords)
+    {
         return;
     }
     if let Some(targets) = get_irc_target(&config.mapping.discord, &msg) {

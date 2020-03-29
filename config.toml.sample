@@ -47,3 +47,5 @@ badwords = [ # filter all messages containing this
 ]
 # repository is used for finding issues by #<id>
 repository = "etlegacy/etlegacy"
+# dont forward messages starting with any of those characters
+filterchars = "!."
